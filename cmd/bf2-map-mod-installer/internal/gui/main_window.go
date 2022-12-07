@@ -89,7 +89,7 @@ func CreateMainWindow(finder *software_finder.SoftwareFinder) (*walk.MainWindow,
 				},
 			},
 			declarative.Label{
-				Text:       "BF2 map mod installer v0.1.0",
+				Text:       "BF2 map mod installer v0.1.1",
 				Alignment:  declarative.AlignHCenterVCenter,
 				TextColor:  walk.Color(win.GetSysColor(win.COLOR_GRAYTEXT)),
 				Background: declarative.SolidColorBrush{Color: walk.Color(win.GetSysColor(win.COLOR_BTNFACE))},
