@@ -1,6 +1,6 @@
 module github.com/cetteup/bf2-map-mod-installer
 
-go 1.18
+go 1.19
 
 require (
 	github.com/cetteup/filerepo v0.0.5
