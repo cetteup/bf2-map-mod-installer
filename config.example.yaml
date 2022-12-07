@@ -1,0 +1,6 @@
+items:
+  - type: mod
+    src_path: Arctic_Warfare
+  - type: map
+    src_path: Christmas_Hill
+    for_mod: Arctic_Warfare

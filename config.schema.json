@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "Items to install (mods/maps)",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "mod",
+              "map"
+            ]
+          },
+          "src_path": {
+            "type": "string"
+          },
+          "for_mod": {
+            "type": "string"
+          }
+        },
+        "anyOf": [
+          {
+            "properties": {
+              "type": {
+                "const": "map"
+              }
+            },
+            "required": [
+              "type",
+              "src_path",
+              "for_mod"
+            ]
+          },
+          {
+            "properties": {
+              "type": {
+                "const": "mod"
+              }
+            },
+            "required": [
+              "type",
+              "src_path"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
