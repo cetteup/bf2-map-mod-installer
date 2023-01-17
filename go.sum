@@ -2,6 +2,8 @@ github.com/cetteup/filerepo v0.0.5 h1:U0Jm+e8L5vKblwFHh4CjcgDgyVPEoa0pdi0izgUDfQ
 github.com/cetteup/filerepo v0.0.5/go.mod h1:4l7JXE5l9gZEtX+Nm87BVpn/lEhUshzHq2tbkE6d0Gc=
 github.com/cetteup/joinme.click-launcher v0.1.11 h1:WouMylLNnLfb34n72j7g35VlELxAZZVdysPcJOVa6AA=
 github.com/cetteup/joinme.click-launcher v0.1.11/go.mod h1:ImUXlAw+EnKaj8eCu4kRS4XfVgIeyhVkGA/eulm6xR0=
+github.com/cetteup/joinme.click-launcher v0.1.12 h1:cp9zn+Gg0XzgqLQK7ZnpIUu8BCLQ+vqj6ukaDogKetI=
+github.com/cetteup/joinme.click-launcher v0.1.12/go.mod h1:Kdwhvoa4S9PSwUOrowQFPT6NgtQ1FhxGCW6pYwE9GWA=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
@@ -45,6 +47,8 @@ golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8/go.mod h1:oPkhp1MJrh7nUepCBc
 golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.2.0 h1:ljd4t30dBnAvMZaQCevtY0xLLD0A+bRZXbgLMLU1F/A=
 golang.org/x/sys v0.2.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.4.0 h1:Zr2JFtRQNX3BCZ8YtxRE9hNJYC8J6I1MVbMg6owUp18=
+golang.org/x/sys v0.4.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 gopkg.in/Knetic/govaluate.v3 v3.0.0 h1:18mUyIt4ZlRlFZAAfVetz4/rzlJs9yhN+U02F4u1AOc=
 gopkg.in/Knetic/govaluate.v3 v3.0.0/go.mod h1:csKLBORsPbafmSCGTEh3U7Ozmsuq8ZSIlKk1bcqph0E=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
