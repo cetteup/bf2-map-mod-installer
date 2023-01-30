@@ -3,6 +3,8 @@
   "extends": [
     "config:base",
     ":semanticCommits"
+    ":automergeLinters",
+    ":automergeTesters"
   ],
   "separateMinorPatch": true
 }
