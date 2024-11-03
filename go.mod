@@ -10,7 +10,7 @@ require (
 	github.com/otiai10/copy v1.9.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.9.0
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v3 v3.0.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 
