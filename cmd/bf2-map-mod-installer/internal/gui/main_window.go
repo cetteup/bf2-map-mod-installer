@@ -3,25 +3,30 @@ package gui
 import (
 	"fmt"
 
-	"github.com/cetteup/bf2-map-mod-installer/internal"
 	"github.com/cetteup/joinme.click-launcher/pkg/software_finder"
 	"github.com/lxn/walk"
 	"github.com/lxn/walk/declarative"
 	"github.com/lxn/win"
 	"github.com/rs/zerolog/log"
+
+	"github.com/cetteup/bf2-map-mod-installer/internal"
 )
 
 const (
 	windowWidth  = 300
-	windowHeight = 125
+	windowHeight = 249
 )
+
+type finder interface {
+	GetInstallDirFromSomewhere(configs []software_finder.Config) (string, error)
+}
 
 type DropDownItem struct { // Used in the ComboBox dropdown
 	Key  int
 	Name string
 }
 
-func CreateMainWindow(finder *software_finder.SoftwareFinder) (*walk.MainWindow, error) {
+func CreateMainWindow(f finder) (*walk.MainWindow, error) {
 	icon, err := walk.NewIconFromResourceIdWithSize(2, walk.Size{Width: 256, Height: 256})
 	if err != nil {
 		return nil, err
@@ -32,10 +37,18 @@ func CreateMainWindow(finder *software_finder.SoftwareFinder) (*walk.MainWindow,
 
 	var mw *walk.MainWindow
 	var itemLabel *walk.Label
+	var pathTE *walk.TextEdit
 	var installBtn *walk.PushButton
 	var uninstallBtn *walk.PushButton
 	var config *internal.Config
 	var bf2InstallPath string
+
+	enableInstallActions := func(path string) {
+		_ = pathTE.SetText(path)
+		_ = pathTE.SetToolTipText(path)
+		installBtn.SetEnabled(true)
+		uninstallBtn.SetEnabled(true)
+	}
 
 	if err := (declarative.MainWindow{
 		AssignTo: &mw,
@@ -58,6 +71,55 @@ func CreateMainWindow(finder *software_finder.SoftwareFinder) (*walk.MainWindow,
 				TextColor:  walk.Color(win.GetSysColor(win.COLOR_CAPTIONTEXT)),
 				Background: declarative.SolidColorBrush{Color: walk.Color(win.GetSysColor(win.COLOR_BTNFACE))},
 			},
+			declarative.VSpacer{Size: 1},
+			declarative.GroupBox{
+				Title:  "Installation folder",
+				Name:   "Installation folder",
+				Layout: declarative.VBox{},
+				Children: []declarative.Widget{
+					declarative.TextEdit{
+						AssignTo: &pathTE,
+						Name:     "Installation folder",
+						ReadOnly: true,
+					},
+					declarative.HSplitter{
+						Children: []declarative.Widget{
+							declarative.PushButton{
+								Text: "Detect",
+								OnClicked: func() {
+									detected, err2 := detectInstallPath(f)
+									if err2 != nil {
+										walk.MsgBox(mw, "Warning", "Could not detect game installation folder, please choose the path manually", walk.MsgBoxIconWarning)
+										return
+									}
+
+									enableInstallActions(detected)
+								},
+							},
+							declarative.PushButton{
+								Text: "Choose",
+								OnClicked: func() {
+									dlg := &walk.FileDialog{
+										Title: "Choose installation folder",
+									}
+
+									ok, err2 := dlg.ShowBrowseFolder(mw)
+									if err2 != nil {
+										walk.MsgBox(mw, "Error", fmt.Sprintf("Failed to choose installation folder: %s", err2.Error()), walk.MsgBoxIconError)
+										return
+									} else if !ok {
+										// User canceled dialog
+										return
+									}
+
+									enableInstallActions(dlg.FilePath)
+								},
+							},
+						},
+					},
+				},
+			},
+			declarative.VSpacer{Size: 1},
 			declarative.PushButton{
 				AssignTo: &installBtn,
 				Text:     "Install",
@@ -123,17 +185,34 @@ func CreateMainWindow(finder *software_finder.SoftwareFinder) (*walk.MainWindow,
 		uninstallBtn.SetEnabled(true)
 	}
 
-	// Determine BF2 install path
-	bf2InstallPath, err = finder.GetInstallDir(software_finder.Config{
-		ForType:           software_finder.RegistryFinder,
-		RegistryPath:      "SOFTWARE\\WOW6432Node\\Electronic Arts\\EA Games\\Battlefield 2",
-		RegistryValueName: "InstallDir",
-	})
-	if err != nil {
-		log.Error().Err(err).Msg("Failed to determine BF2 install path")
-		walk.MsgBox(mw, "Error", fmt.Sprintf("Failed to determine path to Battlefield 2 installation\n%s", err), walk.MsgBoxIconError)
-		return mw, err
+	// Automatically try to detect install path once, pre-filling path if path is detected
+	detected, err := detectInstallPath(f)
+	if err == nil {
+		enableInstallActions(detected)
 	}
 
 	return mw, nil
+}
+
+func detectInstallPath(f finder) (string, error) {
+	// Copied from https://github.com/cetteup/joinme.click-launcher/blob/089fb595adc426aab775fe40165431501a5c38c3/internal/titles/bf2.go#L37
+	dir, err := f.GetInstallDirFromSomewhere([]software_finder.Config{
+		{
+			ForType:           software_finder.RegistryFinder,
+			RegistryKey:       software_finder.RegistryKeyLocalMachine,
+			RegistryPath:      "SOFTWARE\\WOW6432Node\\Electronic Arts\\EA Games\\Battlefield 2",
+			RegistryValueName: "InstallDir",
+		},
+		{
+			ForType:           software_finder.RegistryFinder,
+			RegistryKey:       software_finder.RegistryKeyCurrentUser,
+			RegistryPath:      "SOFTWARE\\BF2Hub Systems\\BF2Hub Client",
+			RegistryValueName: "bf2Dir",
+		},
+	})
+	if err != nil {
+		return "", fmt.Errorf("failed to determine Battlefield 2 install directory: %w", err)
+	}
+
+	return dir, err
 }
