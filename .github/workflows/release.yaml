@@ -19,7 +19,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
           goarch: ${{ matrix.goarch }}
-          goversion: 1.18
+          goversion: 1.20.14
           project_path: cmd/bf2-map-mod-installer
           pre_command: go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@v1.4.0 && pushd cmd/bf2-map-mod-installer && go generate && popd
           ldflags: -H windowsgui
