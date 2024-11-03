@@ -172,17 +172,13 @@ func CreateMainWindow(f finder) (*walk.MainWindow, error) {
 		return mw, err
 	}
 
+	// Update item label
 	if len(config.InstallItems) > 0 {
-		// Update item label
-		err = itemLabel.SetText(fmt.Sprintf("Configuration contains %d mod(s), %d map(s)", len(config.GetItemOfType(internal.ItemTypeMod)), len(config.GetItemOfType(internal.ItemTypeMap))))
-		if err != nil {
-			log.Error().Err(err).Msg("Failed to update item label text")
-			return mw, err
-		}
-
-		// Enable buttons
-		installBtn.SetEnabled(true)
-		uninstallBtn.SetEnabled(true)
+		_ = itemLabel.SetText(fmt.Sprintf(
+			"Configuration contains %d mod(s), %d map(s)",
+			len(config.GetItemOfType(internal.ItemTypeMod)),
+			len(config.GetItemOfType(internal.ItemTypeMap)),
+		))
 	}
 
 	// Automatically try to detect install path once, pre-filling path if path is detected
