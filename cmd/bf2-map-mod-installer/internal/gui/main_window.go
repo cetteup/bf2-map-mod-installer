@@ -50,7 +50,7 @@ func CreateMainWindow(f finder) (*walk.MainWindow, error) {
 		uninstallBtn.SetEnabled(true)
 	}
 
-	if err := (declarative.MainWindow{
+	if err = (declarative.MainWindow{
 		AssignTo: &mw,
 		Title:    "BF2 map mod installer",
 		Name:     "BF2 map mod installer",
